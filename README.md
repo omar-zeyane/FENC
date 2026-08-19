@@ -20,13 +20,27 @@
 
 ## Research artifact
 
-The current hardened experimental HTML artifact is identified by SHA-256:
+The repository's `index.html` is the hardened experimental research artifact used for the current reproducibility record.
+
+SHA-256:
 
 ```text
 945737b4b799240b84d588affdbbf116d0b354d5b92ee4dddc06af73c34b303a
 ```
 
-The repository will contain `FENC_Experimental_Prototype.html` and an `index.html` copy for convenient browser use. Both are reconstructed byte-for-byte from the archived artifact parts and verified against the SHA-256 value above.
+Git blob SHA:
+
+```text
+073aef1dadfb3ff9a5e8fcd4bea6a55e5b34fb96
+```
+
+File size: **544,088 bytes**.
+
+These identifiers are recorded so reviewers and future users can verify that they are using the exact experimental artifact associated with the paper.
+
+## Running the prototype
+
+The project is a self-contained HTML application. Download `index.html` and open it in a modern browser. When GitHub Pages is enabled for this repository, the same file can be served directly from the repository's Pages site.
 
 ## Security scope
 
