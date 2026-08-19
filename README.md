@@ -4,6 +4,12 @@
 
 > **Development status:** experimental development prototype. No public or production application release has been issued. The `v3` identifier refers to the encrypted-container format, not to an application release version.
 
+## Live prototype
+
+GitHub Pages has been enabled for this repository.
+
+**Live site:** https://omar-zeyane.github.io/FENC/
+
 ## Current capabilities
 
 - Client-side file encryption and decryption in the browser
@@ -40,7 +46,7 @@ These identifiers are recorded so reviewers and future users can verify that the
 
 ## Running the prototype
 
-The project is a self-contained HTML application. Download `index.html` and open it in a modern browser. When GitHub Pages is enabled for this repository, the same file can be served directly from the repository's Pages site.
+The project is a self-contained HTML application. It can be used through the GitHub Pages site above or by downloading `index.html` and opening it in a modern browser.
 
 ## Security scope
 
