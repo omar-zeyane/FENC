@@ -5,7 +5,7 @@
   <meta name="color-scheme" content="dark light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy"
-      content="default-src 'none'; script-src 'sha256-Hv9lazmlHN8RMTvZRJeZ1WUS7T7c9F7/CWS1hK4Pvtw=' 'sha256-PVC0QlGbIoSBZDfcGFy+LCjIf16MICFRKlEeSr6KDR4=' 'sha256-FRRIxP7Yb4BOM5trO6M8kfNbynlV1ayqOdd2hjIUR0w=' 'sha256-EFeGawb7cJN8hHGQ0pqhEOzAvnhfkRETZ3399Mlq104=' 'sha256-qRPujlRR0/3E8dj1h+odYgcpWMPD8nDCTbONIaZ7KWo='; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; worker-src blob:; base-uri 'none'; form-action 'none'">
+      content="default-src 'none'; script-src 'sha256-QhnyhmjzGwISOx7Ai6OaA7flQn6k+SE3ct3edJInqcw=' 'sha256-PVC0QlGbIoSBZDfcGFy+LCjIf16MICFRKlEeSr6KDR4=' 'sha256-FRRIxP7Yb4BOM5trO6M8kfNbynlV1ayqOdd2hjIUR0w=' 'sha256-EFeGawb7cJN8hHGQ0pqhEOzAvnhfkRETZ3399Mlq104=' 'sha256-qRPujlRR0/3E8dj1h+odYgcpWMPD8nDCTbONIaZ7KWo='; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; worker-src blob:; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>نظام تشفير ملفات وإخفائها</title>
 <style>
@@ -2050,9 +2050,16 @@ body.expert-on .auto-note-card{display:none}
 
   const MAGIC=[0x46,0x45,0x4E,0x43], VERSION=3;
   const BIG_BLOB_LIMIT=1610612736; /* 1.5 ج.بايت: فوقه يجب استخدام الحفظ المتدفّق */
+  const MAX_CHUNKS=16777216; /* حدّ دفاعي أدنى بكثير من مجال عدّاد uint32 ويطابق حدّ القارئ */
   const KM_PASSWORD=0, KM_RSA=1, KM_ECC=2, KM_MULTI=3, KM_DECOY=4, KM_SHAMIR=6;
   function abortErr(){ const e=new Error('أُلغيت العملية'); e.name='AbortError'; return e; }
   function checkAbort(sig){ if(sig && sig.aborted) throw abortErr(); }
+  function checkedTotalChunks(fileSize,chunkSize){
+    const totalChunks=Math.max(1,Math.ceil(fileSize/chunkSize));
+    if(!Number.isSafeInteger(totalChunks)||totalChunks>MAX_CHUNKS)
+      throw new Error('عدد القطع يتجاوز الحد الآمن المدعوم ('+MAX_CHUNKS+')');
+    return totalChunks;
+  }
   function u64(n){ const o=new Uint8Array(8); let x=n; for(let i=7;i>=0;i--){o[i]=x&0xFF;x=Math.floor(x/256);} return o; }
   function rU64(a,o){ let n=0; for(let i=0;i<8;i++) n=n*256+a[o+i]; return n; }
   const KDF_ARGON2ID=0, KDF_PBKDF2=1;
@@ -2329,7 +2336,7 @@ body.expert-on .auto-note-card{display:none}
   /* ====== ترميز «وحدة» مكتفية ذاتيًا (بيانات وصفية + قطع) في الذاكرة ======
      تُستخدم للإنكار المعقول الحقيقي: كل كلمة مرور تفكّ وحدتها المستقلّة. */
   function regionEncodedLength(file,cipherId,chunkSize){
-    const totalChunks=Math.max(1,Math.ceil(file.size/chunkSize));
+    const totalChunks=checkedTotalChunks(file.size,chunkSize);
     const metaPlain=new TextEncoder().encode(JSON.stringify(
       {name:file.name,type:file.type||'',size:file.size,totalChunks}));
     let n=12+4+metaPlain.length+16; /* metadata IV + length + GCM ciphertext/tag */
@@ -2344,7 +2351,7 @@ body.expert-on .auto-note-card{display:none}
   async function encodeRegion(file,master,cipherId,chunkSize,binding,onProgress,signal){
     const keys=await deriveKeys(master,cipherId);
     const parts=[];
-    const totalChunks=Math.max(1,Math.ceil(file.size/chunkSize));
+    const totalChunks=checkedTotalChunks(file.size,chunkSize);
     const metaPlain=new TextEncoder().encode(JSON.stringify(
       {name:file.name,type:file.type||'',size:file.size,totalChunks}));
     const mIv=rand(12);
@@ -2377,7 +2384,7 @@ body.expert-on .auto-note-card{display:none}
       meta=JSON.parse(new TextDecoder().decode(mp));
     }catch(e){ throw new Error('تعذّر فكّ الوحدة — المفتاح غير صحيح أو البيانات تالفة'); }
     /* تحقق من معقولية عدد القطع المُصادَق عليه (يأتي من بيانات وصفية موثَّقة، لكن نتحقق دفاعياً) */
-    if(!Number.isSafeInteger(meta.totalChunks)||meta.totalChunks<0||meta.totalChunks>16777216)
+    if(!Number.isSafeInteger(meta.totalChunks)||meta.totalChunks<0||meta.totalChunks>MAX_CHUNKS)
       throw new Error('عدد القطع في البيانات الوصفية غير منطقي');
     const prefix=CIPHERS[cipherId].prefix;
     for(let i=0;i<meta.totalChunks;i++){
@@ -2520,7 +2527,7 @@ body.expert-on .auto-note-card{display:none}
 
     const keys=await deriveKeys(master,cipherId);
 
-    const totalChunks=Math.max(1,Math.ceil(file.size/chunkSize));
+    const totalChunks=checkedTotalChunks(file.size,chunkSize);
     const metaPlain=new TextEncoder().encode(JSON.stringify(
       {name:file.name,type:file.type||'',size:file.size,totalChunks}));
     const mIv=rand(12);
