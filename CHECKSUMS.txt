@@ -1,3 +1,5 @@
-SHA-256  index.html  945737b4b799240b84d588affdbbf116d0b354d5b92ee4dddc06af73c34b303a
-Git-blob index.html 073aef1dadfb3ff9a5e8fcd4bea6a55e5b34fb96
-Size     index.html 544088 bytes
+SHA-256  index.html  2c1e0b679f412a4d8f68aae3a097188b8bae729d43c0773df7069ca511e46de9
+Git-blob index.html 68a89fa900c9ed21f46bdd803baebe649bde12fa
+Size     index.html 544539 bytes
+SHA-256  tests/fenc_regression_harness.js  c7aca2fd372e36d977e8b46966d91f65d301a866c484026ac876ca8d305c05c3
+SHA-256  tests/FENC_Final_Validation_Report.txt  ce3301085d4620cab1a8d6debf90a1f1bf612c9aa48654526f94de7e7fa10827
