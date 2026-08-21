@@ -1,0 +1,48 @@
+name: Cross-browser FENC validation
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'index.html'
+      - 'tests/fenc_browser_matrix.mjs'
+      - '.github/workflows/browser-matrix.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  browser-matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+
+      - name: Install pinned Playwright
+        run: npm install --no-save playwright@1.55.0
+
+      - name: Install browser engine
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Run FENC browser validation
+        env:
+          FENC_BROWSER: ${{ matrix.browser }}
+        run: node tests/fenc_browser_matrix.mjs index.html ${{ matrix.browser }}
+
+      - name: Upload browser validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fenc-browser-${{ matrix.browser }}-report
+          path: FENC_Browser_${{ matrix.browser }}_Report.txt
+          if-no-files-found: error
