@@ -16,11 +16,17 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
 
       - name: Apply final artifact hardening
         shell: bash
@@ -50,7 +56,66 @@ jobs:
       - name: Run parser mutation fuzzing
         run: node tests/fenc_parser_fuzz.js index.html 10000
 
+      - name: Run real browser-engine matrix
+        shell: bash
+        run: |
+          set +e
+          mkdir -p reports
+          diag="reports/FENC_Browser_CI_Diagnostics.txt"
+          : > "$diag"
+          echo "Playwright package: 1.55.0" >> "$diag"
+          echo "Node: $(node --version)" >> "$diag"
+          npm install --no-save playwright@1.55.0 >> "$diag" 2>&1
+          npm_rc=$?
+          echo "npm_install_rc=$npm_rc" >> "$diag"
+          if [ "$npm_rc" -eq 0 ]; then
+            npx playwright install --with-deps chromium firefox webkit >> "$diag" 2>&1
+            install_rc=$?
+          else
+            install_rc=99
+          fi
+          echo "playwright_browser_install_rc=$install_rc" >> "$diag"
+          for browser in chromium firefox webkit; do
+            if [ "$npm_rc" -eq 0 ] && [ "$install_rc" -eq 0 ]; then
+              node tests/fenc_browser_matrix.mjs index.html "$browser" >> "$diag" 2>&1
+              rc=$?
+            else
+              rc=98
+            fi
+            echo "${browser}_validation_rc=$rc" >> "$diag"
+            if [ -f "FENC_Browser_${browser}_Report.txt" ]; then
+              cp -f "FENC_Browser_${browser}_Report.txt" reports/
+            fi
+          done
+          exit 0
+
+      - name: Publish browser validation evidence
+        if: always()
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/FENC_Browser_*.txt 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No browser evidence changes to commit"
+          else
+            git commit -m "Publish cross-browser validation evidence"
+            git push
+          fi
+
+      - name: Require complete passing browser matrix
+        if: always()
+        shell: bash
+        run: |
+          test -f reports/FENC_Browser_chromium_Report.txt
+          test -f reports/FENC_Browser_firefox_Report.txt
+          test -f reports/FENC_Browser_webkit_Report.txt
+          grep -F "Result: 14/14 passed" reports/FENC_Browser_chromium_Report.txt
+          grep -F "Result: 14/14 passed" reports/FENC_Browser_firefox_Report.txt
+          grep -F "Result: 14/14 passed" reports/FENC_Browser_webkit_Report.txt
+
       - name: Commit hardened index artifact if required
+        if: always()
         shell: bash
         run: |
           if git diff --quiet -- index.html; then
