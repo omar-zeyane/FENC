@@ -1,0 +1,22 @@
+FENC Browser Matrix Validation
+Engine: webkit
+Browser version: 26.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15
+Secure context: true
+Artifact: index.html
+Result: 14/14 passed
+
+01. PASS | secure context and FENC initialized | 0.0 ms
+02. PASS | AES-GCM password round trip | 1403.0 ms
+03. PASS | XChaCha20-Poly1305 password round trip | 1128.0 ms
+04. PASS | RSA-OAEP round trip | 111.0 ms
+05. PASS | X25519 ECDH round trip | 17.0 ms
+06. PASS | multi-recipient recovery via RSA | 148.0 ms
+07. PASS | wrong password rejected | 1191.0 ms
+08. PASS | Algorithm-ID substitution rejected | 1194.0 ms
+09. PASS | Chunk-size substitution rejected | 1185.0 ms
+10. PASS | reserved-header substitution rejected | 1185.0 ms
+11. PASS | zero-byte XChaCha round trip | 1198.0 ms
+12. PASS | minimum chunk size accepted | 1186.0 ms
+13. PASS | below-minimum chunk size rejected by writer | 1.0 ms
+14. PASS | above-maximum chunk size rejected by writer | 0.0 ms

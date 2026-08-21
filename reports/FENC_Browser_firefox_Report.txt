@@ -1,0 +1,22 @@
+FENC Browser Matrix Validation
+Engine: firefox
+Browser version: 141.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:141.0) Gecko/20100101 Firefox/141.0
+Secure context: true
+Artifact: index.html
+Result: 14/14 passed
+
+01. PASS | secure context and FENC initialized | 0.0 ms
+02. PASS | AES-GCM password round trip | 1910.0 ms
+03. PASS | XChaCha20-Poly1305 password round trip | 1665.0 ms
+04. PASS | RSA-OAEP round trip | 77.0 ms
+05. PASS | X25519 ECDH round trip | 13.0 ms
+06. PASS | multi-recipient recovery via RSA | 96.0 ms
+07. PASS | wrong password rejected | 1638.0 ms
+08. PASS | Algorithm-ID substitution rejected | 1720.0 ms
+09. PASS | Chunk-size substitution rejected | 1701.0 ms
+10. PASS | reserved-header substitution rejected | 1653.0 ms
+11. PASS | zero-byte XChaCha round trip | 1693.0 ms
+12. PASS | minimum chunk size accepted | 1668.0 ms
+13. PASS | below-minimum chunk size rejected by writer | 0.0 ms
+14. PASS | above-maximum chunk size rejected by writer | 0.0 ms
