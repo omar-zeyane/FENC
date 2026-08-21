@@ -1,16 +1,19 @@
-name: Finalize FENC research artifact
+name: Validate FENC research artifact
 
 on:
   push:
     paths:
+      - 'index.html'
+      - 'tests/**'
       - 'tools/apply_chunk_guard.py'
+      - '.github/workflows/finalize-artifact.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  finalize:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -21,13 +24,19 @@ jobs:
       - name: Apply final chunk-counter guard
         run: python3 tools/apply_chunk_guard.py index.html
 
-      - name: Verify final artifact hash
+      - name: Verify frozen artifact hash
         run: echo "2c1e0b679f412a4d8f68aae3a097188b8bae729d43c0773df7069ca511e46de9  index.html" | sha256sum -c -
 
-      - name: Run reproducibility harness
+      - name: Run baseline reproducibility harness
         run: node tests/fenc_regression_harness.js index.html
 
-      - name: Commit final index artifact
+      - name: Run boundary and edge-case harness
+        run: node tests/fenc_boundary_harness.js index.html
+
+      - name: Run deterministic parser mutation fuzzing
+        run: node tests/fenc_parser_fuzz.js index.html 0xF3E0C123
+
+      - name: Commit guarded index artifact if required
         run: |
           if git diff --quiet -- index.html; then
             echo "No index.html change required"
