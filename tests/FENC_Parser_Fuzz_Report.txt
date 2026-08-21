@@ -1,0 +1,18 @@
+FENC Parser/Mutation Fuzz Report
+Node: v22.16.0
+Artifact: index.html
+SHA-256: 2c1e0b679f412a4d8f68aae3a097188b8bae729d43c0773df7069ca511e46de9
+Seed: 0xf3e0c123
+Baseline bytes: 9264
+Baseline round trip: PASS
+
+single-byte mutation: 5000/5000 rejected, 0 unexpected accepts
+truncation: 1000/1000 rejected, 0 unexpected accepts
+trailing-byte extension: 1000/1000 rejected, 0 unexpected accepts
+arbitrary random blob: 2000/2000 rejected, 0 unexpected accepts
+FENC-looking malformed structure: 1000/1000 rejected, 0 unexpected accepts
+
+Total mutated/malformed cases: 10000
+Rejected as expected: 10000/10000
+Unexpected accepts: 0
+Scope note: mutation fuzzing is negative testing, not formal verification, coverage-guided exhaustive fuzzing, or an independent security audit.
