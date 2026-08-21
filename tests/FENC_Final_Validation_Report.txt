@@ -1,58 +1,58 @@
 FENC Final Reproducibility Validation Report
-Date: 2026-08-20
+Date: 2026-08-21
 Environment: Node.js 22.16.0
 Command: node tests/fenc_regression_harness.js index.html
 
 Purpose
 - Reproduce the 18-check regression set reported in the paper.
 - Reproduce the 13 security-relevant targeted checks summarized in Table 5.
-- Verify the explicit writer-side MAX_CHUNKS guard added to prevent uint32 chunk-counter exhaustion.
+- Verify the explicit writer-side MAX_CHUNKS guard.
 
 Console output
 ==============
 Node: v22.16.0
-Artifact: index.html
-SHA-256: 2c1e0b679f412a4d8f68aae3a097188b8bae729d43c0773df7069ca511e46de9
+Artifact: FENC_Experimental_Prototype_Final.html
+SHA-256: 0860c6cdad4c48232e5318b6c9003ea70ed2db8165680db836e893adbe8b3fdb
 
 Regression (18 checks)
-PASS 01/18  gcm round trip  (976.8 ms)
-PASS 02/18  chacha round trip  (943.4 ms)
-PASS 03/18  xchacha round trip  (997.3 ms)
-PASS 04/18  cascade round trip  (1053.8 ms)
-PASS 05/18  valid Algorithm-ID substitution rejected  (984.8 ms)
-PASS 06/18  valid chunk-size substitution rejected  (1071.5 ms)
-PASS 07/18  valid Key-mode substitution rejected  (462.5 ms)
-PASS 08/18  salt mutation rejected  (910.6 ms)
-PASS 09/18  trailing bytes rejected  (964.0 ms)
-PASS 10/18  truncation rejected  (945.9 ms)
-PASS 11/18  PBKDF2 round trip  (304.0 ms)
-PASS 12/18  RSA round trip  (107.1 ms)
-PASS 13/18  X25519 round trip  (7.7 ms)
-PASS 14/18  multi-recipient recovery via RSA  (95.1 ms)
-PASS 15/18  multi-recipient recovery via ECC  (175.0 ms)
-PASS 16/18  Shamir-key round trip  (2.2 ms)
-PASS 17/18  decoy real-password round trip  (1413.1 ms)
-PASS 18/18  decoy alternate-password round trip  (1938.4 ms)
+PASS 01/18  gcm round trip  (1047.4 ms)
+PASS 02/18  chacha round trip  (922.1 ms)
+PASS 03/18  xchacha round trip  (902.3 ms)
+PASS 04/18  cascade round trip  (919.8 ms)
+PASS 05/18  valid Algorithm-ID substitution rejected  (917.9 ms)
+PASS 06/18  valid chunk-size substitution rejected  (889.2 ms)
+PASS 07/18  valid Key-mode substitution rejected  (444.6 ms)
+PASS 08/18  salt mutation rejected  (905.4 ms)
+PASS 09/18  trailing bytes rejected  (966.4 ms)
+PASS 10/18  truncation rejected  (1432.5 ms)
+PASS 11/18  PBKDF2 round trip  (285.4 ms)
+PASS 12/18  RSA round trip  (179.9 ms)
+PASS 13/18  X25519 round trip  (13.2 ms)
+PASS 14/18  multi-recipient recovery via RSA  (360.3 ms)
+PASS 15/18  multi-recipient recovery via ECC  (306.4 ms)
+PASS 16/18  Shamir-key round trip  (2.7 ms)
+PASS 17/18  decoy real-password round trip  (1874.4 ms)
+PASS 18/18  decoy alternate-password round trip  (1867.0 ms)
 Regression: 18/18 passed
 
 Targeted security subset (13 checks)
-PASS 01/13  valid password-protected round trip  (972.1 ms)
-PASS 02/13  wrong password rejected  (932.4 ms)
-PASS 03/13  corrupted encrypted metadata rejected  (939.2 ms)
-PASS 04/13  modified chunk ciphertext rejected  (914.0 ms)
-PASS 05/13  reordered first two chunks rejected  (905.5 ms)
-PASS 06/13  wrong RSA private key rejected  (284.9 ms)
-PASS 07/13  modified password-mode salt rejected  (931.9 ms)
-PASS 08/13  wrong ECDH private key rejected  (8.3 ms)
-PASS 09/13  valid Algorithm-ID substitution 2->0 rejected  (926.2 ms)
-PASS 10/13  valid chunk-size substitution 4096->8192 rejected  (913.4 ms)
-PASS 11/13  valid Key-mode substitution Password->Shamir rejected  (462.7 ms)
-PASS 12/13  truncated container rejected  (904.6 ms)
-PASS 13/13  trailing bytes rejected  (949.7 ms)
+PASS 01/13  valid password-protected round trip  (1169.0 ms)
+PASS 02/13  wrong password rejected  (948.9 ms)
+PASS 03/13  corrupted encrypted metadata rejected  (1180.9 ms)
+PASS 04/13  modified chunk ciphertext rejected  (1095.5 ms)
+PASS 05/13  reordered first two chunks rejected  (960.2 ms)
+PASS 06/13  wrong RSA private key rejected  (200.8 ms)
+PASS 07/13  modified password-mode salt rejected  (949.7 ms)
+PASS 08/13  wrong ECDH private key rejected  (7.4 ms)
+PASS 09/13  valid Algorithm-ID substitution 2->0 rejected  (966.5 ms)
+PASS 10/13  valid chunk-size substitution 4096->8192 rejected  (909.2 ms)
+PASS 11/13  valid Key-mode substitution Password->Shamir rejected  (449.6 ms)
+PASS 12/13  truncated container rejected  (926.3 ms)
+PASS 13/13  trailing bytes rejected  (900.0 ms)
 Targeted security subset: 13/13 passed
 
 Counter-limit guard (1 checks)
-PASS 01/1  writer rejects chunk counts beyond MAX_CHUNKS before processing  (0.8 ms)
+PASS 01/1  writer rejects chunk counts beyond MAX_CHUNKS before processing  (1.1 ms)
 Counter-limit guard: 1/1 passed
 
 Overall: 32/32 passed

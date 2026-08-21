@@ -1,0 +1,111 @@
+--- a/index.html
++++ b/index.html
+@@ -5,7 +5,7 @@
+   <meta name="color-scheme" content="dark light">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="Content-Security-Policy"
+-      content="default-src 'none'; script-src 'sha256-QhnyhmjzGwISOx7Ai6OaA7flQn6k+SE3ct3edJInqcw=' 'sha256-PVC0QlGbIoSBZDfcGFy+LCjIf16MICFRKlEeSr6KDR4=' 'sha256-FRRIxP7Yb4BOM5trO6M8kfNbynlV1ayqOdd2hjIUR0w=' 'sha256-EFeGawb7cJN8hHGQ0pqhEOzAvnhfkRETZ3399Mlq104=' 'sha256-qRPujlRR0/3E8dj1h+odYgcpWMPD8nDCTbONIaZ7KWo='; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; worker-src blob:; base-uri 'none'; form-action 'none'">
++      content="default-src 'none'; script-src 'sha256-M/8q7aZnu9NQEfYZ8dx2IQVtjekh8Ux1Rx7PZ3OjStU=' 'sha256-PVC0QlGbIoSBZDfcGFy+LCjIf16MICFRKlEeSr6KDR4=' 'sha256-FRRIxP7Yb4BOM5trO6M8kfNbynlV1ayqOdd2hjIUR0w=' 'sha256-EFeGawb7cJN8hHGQ0pqhEOzAvnhfkRETZ3399Mlq104=' 'sha256-qRPujlRR0/3E8dj1h+odYgcpWMPD8nDCTbONIaZ7KWo='; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; worker-src blob:; base-uri 'none'; form-action 'none'">
+ <meta name="referrer" content="no-referrer">
+ <title>نظام تشفير ملفات وإخفائها</title>
+ <style>
+@@ -1174,9 +1174,7 @@
+                 </div>
+               </div>
+             </div>
+-            <div class="note amber only-a"><b>وضع المحتوى الوهمي (إنكار معقول محدود):</b> يحوي الملف وحدتين مستقلّتين بمفتاحين منفصلين؛ مع التنبيه أنّ بنية الملف قد تكشف استخدام هذا الوضع ولا يقدّم ضماناً جنائياً مطلقاً.
+-              الكلمة الحقيقية تفكّ ملفك الحقيقي، والكلمة الوهمية تفكّ <b>ملفاً مختلفاً تماماً</b> تُظهره
+-              تحت الإكراه. لا يستطيع من يملك الكلمة الوهمية إثبات وجود محتوى ثانٍ (يَعدّ بقيّة الملف حشواً).
++            <div class="note amber only-a"><b>وضع المحتوى البديل (Decoy — دون ضمان إنكار معقول):</b> يحوي الملف وحدتين مستقلّتين بمفتاحين منفصلين. تكشف بنية الحاوية استخدام هذا الوضع، وقد تكشف بيئة الجهاز أو الذاكرة المحتوى الحقيقي؛ لذلك لا ينبغي الاعتماد عليه لمقاومة الفحص الجنائي أو الإكراه. الكلمة الحقيقية تفكّ الملف الحقيقي، والكلمة البديلة تفكّ <b>ملفاً مختلفاً</b>.
+               <br><span style="opacity:.85">حدّ معلن بصدق: بنية الملف تُظهر أن «أسلوب الإنكار» مُستخدَم؛ المُخفى هو المحتوى الثاني وعدد كلمات المرور، لا أصل وجود النظام.</span></div>
+             <!-- لوحة فك التشفير: حقل واحد فقط -->
+             <div class="field only-b">
+@@ -1246,7 +1244,7 @@
+                 <option value="gcm">AES-256-GCM — معيار صناعي مُسرَّع عتادياً</option>
+                 <option value="xchacha" selected>XChaCha20-Poly1305 — عصري متين</option>
+                 <option value="chacha">ChaCha20-Poly1305 — سريع على كل المعالجات</option>
+-                <option value="cascade">متتالٍ: AES-GCM + XChaCha20 — تنوّع تشفيري</option>
++                <option value="cascade">متتالٍ تجريبي: AES-GCM + XChaCha20 — لا يعني أماناً أعلى</option>
+               </select>
+               <div class="hint" id="cipherHint"></div>
+             </div>
+@@ -1743,7 +1741,7 @@
+             <li><b>RSA-OAEP:</b> مناسب لمشاركة ملفٍ مع شخصٍ يملك مفتاحاً عاماً.</li>
+             <li><b>ECDH / ECC:</b> مناسب للتبادل الآمن المتقدّم.</li>
+             <li><b>عدّة مستلمين (Multi-recipient):</b> لتشفير الملف لعدّة أشخاص.</li>
+-            <li><b>الإنكار المعقول (Decoy):</b> يوفّر كلمة مرور بديلة لفتح محتوى تمويهي.</li>
++            <li><b>المحتوى البديل (Decoy):</b> يوفّر كلمة مرور بديلة لفتح محتوى مختلف، دون ضمان للإنكار المعقول أو مقاومة الفحص الجنائي.</li>
+           </ul>
+           <p>تعتمد قوة هذه الأوضاع على صحّة التنفيذ وحماية المفاتيح؛ فهي ليست ضماناً مطلقاً بحدّ ذاتها.</p>
+         </div>
+@@ -1756,7 +1754,7 @@
+             <li><b>AES-256-GCM:</b> قوية وسريعة ومدعومة أصلياً في Web Crypto API.</li>
+             <li><b>ChaCha20-Poly1305:</b> مناسبة للأجهزة التي قد لا تستفيد من تسريع AES العتادي.</li>
+             <li><b>XChaCha20-Poly1305:</b> تستخدم Nonce أطول وتحتاج مكتبة مساعدة لأنها غير مدعومة أصلياً في Web Crypto API.</li>
+-            <li><b>الوضع المتتالي (Cascade):</b> يجمع أكثر من طبقة تشفير لكنه يزيد زمن المعالجة.</li>
++            <li><b>الوضع المتتالي التجريبي (Cascade):</b> يجمع طبقتي AEAD لأغراض هندسية وتجريبية، ولا يُدّعى أنه أقوى من خوارزمية AEAD واحدة مضبوطة جيداً.</li>
+           </ul>
+         </div>
+       </details>
+@@ -1904,7 +1902,7 @@
+           <p><b>RSA-OAEP:</b> يُغلَّف مفتاح الملف بالمفتاح العام للمستلم. مناسب للمشاركة. القيد: إدارة أزواج المفاتيح.</p>
+           <p><b>ECDH / ECC:</b> اشتقاق مفتاحٍ مشترك عبر منحنياتٍ إهليلجية (X25519/P-256) ثم HKDF. مناسب للتبادل المتقدّم بمفاتيح أصغر.</p>
+           <p><b>عدّة مستلمين:</b> مفتاح ملفٍ واحد مغلَّفٌ لكل مستلمٍ بمفتاحه. مناسب للتوزيع الجماعي.</p>
+-          <p><b>وضع المحتوى الوهمي (Decoy):</b> وحدتان مستقلّتان بمفتاحين رئيسيين منفصلين؛ تفكّ الكلمة الحقيقية المحتوى الحقيقي وتفكّ الكلمة الوهمية محتوًى وهمياً مختلفاً تماماً. القيد: بايت «وضع المفتاح» في الترويسة يكشف استخدام الأسلوب، وقد يكشف فحص الجهاز أو الذاكرة الوضع، فهو دعم محدود للإنكار المعقول لا ضمان جنائي مطلق.</p>
++          <p><b>وضع المحتوى البديل (Decoy):</b> وحدتان مستقلّتان بمفتاحين رئيسيين منفصلين؛ تفكّ الكلمة الحقيقية المحتوى الحقيقي وتفكّ الكلمة البديلة محتوًى مختلفاً. بايت «وضع المفتاح» في الترويسة يكشف استخدام الأسلوب، وقد يكشف فحص الجهاز أو الذاكرة المحتوى الحقيقي؛ لذلك لا يقدّم هذا الوضع ضماناً للإنكار المعقول أو مقاومة الفحص الجنائي.</p>
+           <p><b>الارتباط الأكاديمي:</b> الفصلان الثالث والرابع.</p>
+         </div>
+       </details>
+@@ -1915,7 +1913,7 @@
+           <p><b>AES-256-GCM:</b> سرّية + سلامة، ومدعومة أصلياً في Web Crypto API، وتستفيد من تسريع العتاد. الأنسب افتراضياً.</p>
+           <p><b>ChaCha20-Poly1305:</b> أداءٌ ثابتٌ على الأجهزة بلا تسريع AES.</p>
+           <p><b>XChaCha20-Poly1305:</b> Nonce ممتد (192 بت) يقلّل خطر التكرار؛ تُنفَّذ عبر مكتبة noble المساعِدة. أثرها على الأداء طفيف.</p>
+-          <p><b>الوضع المتتالي:</b> طبقتان (AES-GCM ثم XChaCha20) لعمقٍ دفاعيٍّ أكبر مقابل زمنٍ أعلى.</p>
++          <p><b>الوضع المتتالي التجريبي:</b> طبقتان (AES-GCM ثم XChaCha20) لأغراض هندسية وتجريبية مع فصل المفاتيح، مقابل زمنٍ وتعقيد أعلى؛ ولا يُدّعى أنه يوفّر مستوى أمان أعلى من AEAD واحدة مضبوطة جيداً.</p>
+           <p><b>الارتباط الأكاديمي:</b> الفصول الثاني والرابع والخامس.</p>
+         </div>
+       </details>
+@@ -2074,7 +2072,7 @@
+     0:{name:'AES-256-GCM',           prefix:12+4},
+     1:{name:'ChaCha20-Poly1305',     prefix:12+4},
+     2:{name:'XChaCha20-Poly1305',    prefix:24+4},
+-    3:{name:'متتالٍ: AES-GCM + XChaCha20', prefix:12+24+4},
++    3:{name:'متتالٍ تجريبي: AES-GCM + XChaCha20', prefix:12+24+4},
+   };
+   const CIPHER_ID={gcm:0,chacha:1,xchacha:2,cascade:3};
+ 
+@@ -2408,8 +2406,9 @@
+ 
+   async function encryptFile(file,opts,onProgress,writer){
+     const signal=opts.signal;
+-    const chunkSize=opts.chunkSize|0;
+-    if(chunkSize<1024) throw new Error('حجم القطعة غير صالح');
++    const chunkSize=Number(opts.chunkSize);
++    if(!Number.isSafeInteger(chunkSize)||chunkSize<1024||chunkSize>134217728)
++      throw new Error('حجم القطعة غير صالح — يجب أن يكون عدداً صحيحاً بين 1 KiB و128 MiB');
+     const cipherId=CIPHER_ID[opts.cipher];
+     if(cipherId===undefined) throw new Error('خوارزمية تشفير غير معروفة');
+ 
+@@ -2465,18 +2464,18 @@
+       sharesOut=shamirSplit(master,n,k).map(s=>shareToPEM(s,k,n));
+       keyBlock=new Uint8Array([k,n]);
+     }else if(opts.keyMode==='decoy'){
+-      /* ====== وضع المحتوى الوهمي (دعم محدود للإنكار المعقول) ======
++      /* ====== وضع المحتوى البديل (Decoy — دون ضمان إنكار معقول) ======
+          وحدتان مستقلّتان داخل الملف، لكلٍّ مفتاحها الرئيسي ومحتواها:
+          - كلمة المرور الحقيقية تفكّ الملف الحقيقي.
+-         - كلمة المرور الوهمية تفكّ ملفاً وهمياً (يُظهَر تحت الإكراه).
++         - كلمة المرور البديلة تفكّ ملفاً بديلاً مختلفاً.
+          كل غلاف يصادق على (المفتاح + إزاحة وحدته + طولها)، فيجد كلٌّ وحدته
+          دون معرفة الأخرى. الأغلفة والوحدات تبدو كبيانات عشوائية، فلا يستطيع
+-         من يملك الكلمة الوهمية إثبات وجود محتوى ثانٍ (يَعدّ بقيّة الملف حشواً).
++         لا يقدّم هذا الوضع ضماناً للإنكار المعقول لأن بنية الحاوية تكشف استخدامه.
+          الحدّ الباقي بصدق: بايت «وضع المفتاح» في الترويسة = DECOY، فالنظام لا
+          يُخفي أن «أسلوب الإنكار» مُستخدَم؛ بل يُخفي المحتوى الثاني وعدد الكلمات. */
+       if(!opts.password||!opts.decoyPassword) throw new Error('كلمتا المرور (الحقيقية والوهمية) مطلوبتان');
+       if(opts.password===opts.decoyPassword) throw new Error('يجب أن تختلف كلمة المرور الوهمية عن الحقيقية');
+-      if(!opts.decoyFile) throw new Error('وضع الإنكار يتطلّب ملفاً وهمياً يُظهَر تحت الإكراه');
++      if(!opts.decoyFile) throw new Error('وضع المحتوى البديل يتطلّب ملفاً بديلاً مختلفاً');
+       const m=opts.argonMem|0,t=opts.argonTime|0,p=opts.argonPar|0||1;
+       if(m<19456||t<2) throw new Error('معاملات Argon2id ضعيفة جداً (الحد الأدنى 19 ميجابايت وt≥2)');
+       if(onProgress) onProgress(0,file.size,0,0,'deriving');

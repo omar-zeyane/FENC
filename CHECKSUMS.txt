@@ -1,5 +1,8 @@
-SHA-256  index.html  2c1e0b679f412a4d8f68aae3a097188b8bae729d43c0773df7069ca511e46de9
-Git-blob index.html 68a89fa900c9ed21f46bdd803baebe649bde12fa
-Size     index.html 544539 bytes
-SHA-256  tests/fenc_regression_harness.js  c7aca2fd372e36d977e8b46966d91f65d301a866c484026ac876ca8d305c05c3
-SHA-256  tests/FENC_Final_Validation_Report.txt  ce3301085d4620cab1a8d6debf90a1f1bf612c9aa48654526f94de7e7fa10827
+SHA-256  index.html  0860c6cdad4c48232e5318b6c9003ea70ed2db8165680db836e893adbe8b3fdb
+Git-blob index.html 0b1e2f544872fb73f4d32d16fbc40ba80317b1dc
+Size     index.html 544996 bytes
+SHA-256  tests/fenc_edge_validation.js  93f09c85b44e48d6735ac2b0baed96c6abf246a265351d453f9824e7978852da
+SHA-256  tests/fenc_parser_fuzz.js  e36a96426c986db967ac72ee3f1ba1db9baa96ee23070be96a6bf1d700ad3d19
+SHA-256  tests/FENC_Final_Validation_Report.txt  3ae7b0586269bd558c066364a839e75d2dcf503df4ca144b17a1f62647d46484
+SHA-256  tests/FENC_Edge_Validation_Report.txt  aac8e0153d68400d025aedfe88acedf6036cddd9af73e7175a46c22daa4acc1c
+SHA-256  tests/FENC_Parser_Fuzz_Report.txt  816970003480487a474bf8ccc63e6a502d7199bbd55358b37644fb0137e38c4f

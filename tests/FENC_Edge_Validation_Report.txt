@@ -1,0 +1,30 @@
+FENC Edge-Case Validation Report
+Date: 2026-08-21
+Environment: Node.js 22.16.0
+Command: node tests/fenc_edge_validation.js index.html
+
+Purpose
+- Exercise zero-byte round trips across all four content-cipher configurations.
+- Check 1 KiB and 128 MiB accepted chunk-size boundaries.
+- Reject below-minimum, above-maximum, and non-integer writer chunk sizes.
+- Check nonce tampering and reserved-header substitution rejection.
+
+Console output
+==============
+Node: v22.16.0
+Artifact: FENC_Experimental_Prototype_Final.html
+SHA-256: 0860c6cdad4c48232e5318b6c9003ea70ed2db8165680db836e893adbe8b3fdb
+PASS 01/13  zero-byte gcm round trip (8.5 ms)
+PASS 02/13  zero-byte chacha round trip (3.4 ms)
+PASS 03/13  zero-byte xchacha round trip (3.6 ms)
+PASS 04/13  zero-byte cascade round trip (2.3 ms)
+PASS 05/13  minimum chunk size 1 KiB accepted (2.1 ms)
+PASS 06/13  maximum chunk size 128 MiB accepted (1.7 ms)
+PASS 07/13  writer rejects chunk size below 1 KiB (0.4 ms)
+PASS 08/13  writer rejects chunk size above 128 MiB (0.1 ms)
+PASS 09/13  writer rejects non-integer chunk size (0.1 ms)
+PASS 10/13  gcm repeated per-file nonce across chunks is rejected (2.1 ms)
+PASS 11/13  chacha repeated per-file nonce across chunks is rejected (2.5 ms)
+PASS 12/13  XChaCha nonce mutation is rejected (3.1 ms)
+PASS 13/13  reserved-byte substitution is rejected by bound authentication (1.6 ms)
+Overall: 13/13 passed
