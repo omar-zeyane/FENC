@@ -40,7 +40,7 @@ Nonce uniqueness is scoped to a content-key domain. FENC establishes fresh file-
 
 ## Reproducing the reported validation
 
-Requirements: **Node.js 22.16.0** (or a compatible Node 22 environment with Web Crypto, File, and Blob support).
+Requirements for the core harnesses: **Node.js 22.16.0** (or a compatible Node 22 environment with Web Crypto, File, and Blob support).
 
 Run from the repository root:
 
@@ -49,6 +49,8 @@ node tests/fenc_regression_harness.js index.html
 node tests/fenc_edge_validation.js index.html
 node tests/fenc_parser_fuzz.js index.html 10000
 ```
+
+For browser-engine validation, the CI workflow pins **Playwright 1.55.0** and runs the unchanged `index.html` artifact through Chromium, Firefox, and WebKit using `tests/fenc_browser_matrix.mjs`.
 
 Published results:
 
@@ -61,19 +63,22 @@ Published results:
 - Unexpected accepts: **0**
 - Harness exceptions: **0**
 - Structured malformed-container cases: **17/17 rejected**
+- Browser-engine matrix: **14/14 passed in each engine**
+  - Chromium **140.0.7339.16**: 14/14
+  - Firefox **141.0**: 14/14
+  - WebKit **26.0**: 14/14
 
-Reports are preserved under `tests/`:
-- `FENC_Final_Validation_Report.txt`
-- `FENC_Edge_Validation_Report.txt`
-- `FENC_Parser_Fuzz_Report.txt`
+Core validation reports are preserved under `tests/`; browser-engine reports and CI diagnostics are preserved under `reports/`.
 
-The mutation campaign is negative testing, not formal verification, exhaustive parser proof, coverage-guided fuzzing, or an independent security audit.
+The browser matrix checks secure-context initialization, AES-GCM and XChaCha20-Poly1305 password round trips, RSA-OAEP, X25519 ECDH, multi-recipient recovery, wrong-password rejection, structural-header substitutions, zero-byte handling, and chunk-size bounds. Per-test timings are diagnostic only and are **not** interpreted as a performance benchmark.
+
+The mutation campaign and browser matrix are implementation-level evidence, not formal verification, exhaustive parser proof, coverage-guided fuzzing, or an independent security audit.
 
 ## Evaluation scope
 
-The final paper removes the earlier pre-hardening primitive-only throughput table from publication evidence. A controlled cross-browser, end-to-end performance study with documented hardware and statistical treatment is left to future work.
+The final paper removes the earlier pre-hardening primitive-only throughput table from publication evidence. A controlled end-to-end performance study with documented hardware, memory measurements, branded browser releases, and statistical treatment remains future work.
 
-Cross-browser validation has **not** been claimed from the Node.js harnesses. Chrome/Chromium, Edge, Firefox, large-file stress testing, and multi-gigabyte end-to-end I/O remain explicit future validation work.
+The published browser matrix is an automated **engine-level** validation on CI. Chromium and Firefox are real browser engines, and Playwright WebKit exercises the WebKit engine, but this is not equivalent to validating every shipping Chrome/Edge build or Safari on macOS/iOS. File System Access API behavior, memory-pressure scenarios, and multi-gigabyte end-to-end I/O are also outside the current matrix.
 
 ## Security scope
 
